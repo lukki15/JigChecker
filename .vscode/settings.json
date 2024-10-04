@@ -1,0 +1,11 @@
+{
+    "cmake.sourceDirectory": [
+        "${workspaceFolder}/all",
+        "${workspaceFolder}",
+    ],
+    "cmake.buildDirectory": "${workspaceFolder}/build",
+    "cmake.ctest.testExplorerIntegrationEnabled": false,
+    "conventionalCommits.gitmoji": false,
+    "conventionalCommits.promptFooter": false,
+    "conventionalCommits.promptScopes": false,
+}
