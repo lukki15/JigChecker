@@ -19,6 +19,7 @@
 	"customizations": {
 		"vscode": {
 			"extensions": [
+				"cheshirekow.cmake-format",
 				"matepek.vscode-catch2-test-adapter",
 				"mhutchie.git-graph",
 				"ms-vscode.cmake-tools",
