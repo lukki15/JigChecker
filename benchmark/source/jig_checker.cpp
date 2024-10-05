@@ -1,4 +1,5 @@
 #include <benchmark/benchmark.h>
+
 #include <checker/jig_checker.hpp>
 
 static void BM_GenerateConnections(benchmark::State& state) {
@@ -9,5 +10,5 @@ static void BM_GenerateConnections(benchmark::State& state) {
 BENCHMARK(BM_GenerateConnections)
     ->Arg(1)
     ->Arg(7)
-    ->Arg(checker::NUM_CONNECTIONS/2)
+    ->Arg(checker::NUM_CONNECTIONS / 2)
     ->Arg(checker::NUM_CONNECTIONS);

@@ -1,8 +1,5 @@
 {
-    "cmake.sourceDirectory": [
-        "${workspaceFolder}/all",
-        "${workspaceFolder}",
-    ],
+    "cmake.sourceDirectory": "${workspaceFolder}/all",
     "cmake.buildDirectory": "${workspaceFolder}/build",
     "cmake.ctest.testExplorerIntegrationEnabled": false,
     "conventionalCommits.gitmoji": false,

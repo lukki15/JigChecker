@@ -1,6 +1,6 @@
-#include <gtest/gtest.h>
 #include <greeter/greeter.h>
 #include <greeter/version.h>
+#include <gtest/gtest.h>
 
 #include <string>
 

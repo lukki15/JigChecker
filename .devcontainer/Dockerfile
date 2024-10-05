@@ -14,5 +14,8 @@ RUN if [ "${REINSTALL_CMAKE_VERSION_FROM_SOURCE}" != "none" ]; then \
 # RUN su vscode -c "${VCPKG_ROOT}/vcpkg install <your-port-name-here>"
 
 # [Optional] Uncomment this section to install additional packages.
-# RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
-#     && apt-get -y install --no-install-recommends <your-package-list-here>
+ENV DEBIAN_FRONTEND=noninteractive
+RUN sudo apt-get update && \
+    sudo apt-get install -y -q --no-install-recommends \
+        clang-format \
+    && sudo apt-get autoremove -y
