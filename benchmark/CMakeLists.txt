@@ -14,6 +14,7 @@ include(../cmake/tools.cmake)
 
 include(../cmake/CPM.cmake)
 
+CPMAddPackage("gh:google/googletest@1.15.2")
 CPMAddPackage("gh:google/benchmark@1.9.0")
 CPMAddPackage("gh:TheLartians/Format.cmake@1.7.3")
 
