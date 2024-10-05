@@ -14,7 +14,7 @@ namespace checker {
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_int_distribution<int32_t> dis_direction(0, 1);
-    std::uniform_int_distribution<int32_t> dis_unique_connections(1, unique_connections);
+    std::uniform_int_distribution<int32_t> dis_unique_connections(1, static_cast<int32_t>(unique_connections));
 
     for (size_t i = 1; i <= unique_connections; i++) {
       array.at(i - 1) = i * (dis_direction(gen) * 2 - 1);
