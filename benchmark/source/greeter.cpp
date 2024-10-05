@@ -6,7 +6,9 @@ static void BM_Greet(benchmark::State& state) {
   using namespace greeter;
   Greeter greeter("Tests");
 
-  for (auto _ : state) greeter.greet(static_cast<LanguageCode>(state.range(0)));
+  for (auto _ : state) {
+    greeter.greet(static_cast<LanguageCode>(state.range(0)));
+  }
 }
 BENCHMARK(BM_Greet)
     ->Arg(static_cast<int>(greeter::LanguageCode::EN))
