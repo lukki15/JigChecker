@@ -7,7 +7,7 @@
 
 using UniqueConnections = testing::TestWithParam<size_t>;
 INSTANTIATE_TEST_SUITE_P(JigCheckerParam, UniqueConnections,
-                         testing::Range(1UL, checker::NUM_CONNECTIONS + 1));
+                         testing::Range<size_t>(1UL, checker::NUM_CONNECTIONS + 1UL));
 
 TEST_P(UniqueConnections, Check) {
   auto array = checker::generateConnections(GetParam());
