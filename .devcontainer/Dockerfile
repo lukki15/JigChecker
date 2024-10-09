@@ -17,5 +17,6 @@ RUN if [ "${REINSTALL_CMAKE_VERSION_FROM_SOURCE}" != "none" ]; then \
 ENV DEBIAN_FRONTEND=noninteractive
 RUN sudo apt-get update && \
     sudo apt-get install -y -q --no-install-recommends \
+        cmake-format \
         clang-format \
     && sudo apt-get autoremove -y
