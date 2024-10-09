@@ -15,7 +15,7 @@ BENCHMARK(BM_GenerateConnections)
     ->Arg(checker::NUM_CONNECTIONS);
 
 static void BM_GeneratePieces(benchmark::State& state) {
-  std::array<int32_t, checker::NUM_CONNECTIONS> connections{};
+  std::array<checker::Connection, checker::NUM_CONNECTIONS> connections{};
   std::iota(connections.begin(), connections.end(), 1);
 
   for (auto _ : state) {

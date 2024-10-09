@@ -41,16 +41,16 @@ namespace checker {
       size_t x = i % (JIGSAW_SIZE - 1);
       size_t y = i / (JIGSAW_SIZE - 1);
       size_t pieces_i = y * JIGSAW_SIZE + x;
-      pieces.at(pieces_i).at(Direction::right) = connections.at(i);
-      pieces.at(pieces_i + 1).at(Direction::left) = -connections.at(i);
+      pieces.at(pieces_i).right = connections.at(i);
+      pieces.at(pieces_i + 1).left = -connections.at(i);
     }
 
     for (size_t i = 0; i < y_pieces; i++) {
       size_t x = i / (JIGSAW_SIZE - 1);
       size_t y = i % (JIGSAW_SIZE - 1);
       size_t pieces_i = y * JIGSAW_SIZE + x;
-      pieces.at(pieces_i).at(Direction::bottom) = connections.at(i + x_pieces);
-      pieces.at(pieces_i + JIGSAW_SIZE).at(Direction::top) = -connections.at(i + x_pieces);
+      pieces.at(pieces_i).bottom = connections.at(i + x_pieces);
+      pieces.at(pieces_i + JIGSAW_SIZE).top = -connections.at(i + x_pieces);
     }
 
     return pieces;

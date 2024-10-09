@@ -29,10 +29,10 @@ TEST(GeneratePieces, Empty) {
   auto pieces = checker::generatePieces({});
 
   for (const auto& piece : pieces) {
-    EXPECT_EQ(piece.at(checker::Direction::right), 0);
-    EXPECT_EQ(piece.at(checker::Direction::bottom), 0);
-    EXPECT_EQ(piece.at(checker::Direction::left), 0);
-    EXPECT_EQ(piece.at(checker::Direction::top), 0);
+    EXPECT_EQ(piece.right, 0);
+    EXPECT_EQ(piece.bottom, 0);
+    EXPECT_EQ(piece.left, 0);
+    EXPECT_EQ(piece.top, 0);
   }
 }
 
@@ -41,10 +41,10 @@ void checkPiece(const checker::Pieces& pieces, size_t index, int32_t right, int3
   SCOPED_TRACE("piece: " + std::to_string(index));
   const auto& piece = pieces.at(index);
 
-  EXPECT_EQ(piece.at(checker::Direction::right), right);
-  EXPECT_EQ(piece.at(checker::Direction::bottom), bottom);
-  EXPECT_EQ(piece.at(checker::Direction::left), left);
-  EXPECT_EQ(piece.at(checker::Direction::top), top);
+  EXPECT_EQ(piece.right, right);
+  EXPECT_EQ(piece.bottom, bottom);
+  EXPECT_EQ(piece.left, left);
+  EXPECT_EQ(piece.top, top);
 }
 
 TEST(GeneratePieces, Example) {
