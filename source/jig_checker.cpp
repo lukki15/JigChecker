@@ -13,16 +13,17 @@ namespace checker {
 
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_int_distribution<checker::Connection> dis_direction(0, 1);
-    std::uniform_int_distribution<checker::Connection> dis_unique_connections(
-        1, static_cast<checker::Connection>(unique_connections));
+    std::uniform_int_distribution<int16_t> dis_direction(0, 1);
+    std::uniform_int_distribution<int16_t> dis_unique_connections(
+        1, static_cast<int16_t>(unique_connections));
 
     for (size_t i = 1; i <= unique_connections; i++) {
-      array.at(i - 1) = static_cast<checker::Connection>(i) * (dis_direction(gen) * 2 - 1);
+      array.at(i - 1) = static_cast<checker::Connection>(i * (dis_direction(gen) * 2 - 1));
     }
 
     for (size_t i = unique_connections; i < array.size(); i++) {
-      array.at(i) = dis_unique_connections(gen) * (dis_direction(gen) * 2 - 1);
+      array.at(i) = static_cast<checker::Connection>(dis_unique_connections(gen)
+                                                     * (dis_direction(gen) * 2 - 1));
     }
 
     std::shuffle(array.begin(), array.end(), gen);
