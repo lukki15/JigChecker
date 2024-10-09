@@ -4,6 +4,7 @@
 
 #include <checker/jig_checker.hpp>
 #include <cmath>
+#include <numeric>
 
 using UniqueConnections = testing::TestWithParam<size_t>;
 INSTANTIATE_TEST_SUITE_P(JigCheckerParam, UniqueConnections,
@@ -81,4 +82,40 @@ TEST(GeneratePieces, Example) {
   checkPiece(pieces, 22, -6, 0, 7, 2);
   checkPiece(pieces, 23, -1, 0, 6, 4);
   checkPiece(pieces, 24, 0, 0, 1, -7);
+}
+
+TEST(GeneratePieces, iota) {
+  std::array<checker::Connection, checker::NUM_CONNECTIONS> connections{};
+  std::iota(connections.begin(), connections.end(), 1);
+  auto pieces = checker::generatePieces(connections);
+
+  checkPiece(pieces, 0, 1, 21, 0, 0);
+  checkPiece(pieces, 1, 2, 25, -1, 0);
+  checkPiece(pieces, 2, 3, 29, -2, 0);
+  checkPiece(pieces, 3, 4, 33, -3, 0);
+  checkPiece(pieces, 4, 0, 37, -4, 0);
+
+  checkPiece(pieces, 5, 5, 22, 0, -21);
+  checkPiece(pieces, 6, 6, 26, -5, -25);
+  checkPiece(pieces, 7, 7, 30, -6, -29);
+  checkPiece(pieces, 8, 8, 34, -7, -33);
+  checkPiece(pieces, 9, 0, 38, -8, -37);
+
+  checkPiece(pieces, 10, 9, 23, 0, -22);
+  checkPiece(pieces, 11, 10, 27, -9, -26);
+  checkPiece(pieces, 12, 11, 31, -10, -30);
+  checkPiece(pieces, 13, 12, 35, -11, -34);
+  checkPiece(pieces, 14, 0, 39, -12, -38);
+
+  checkPiece(pieces, 15, 13, 24, 0, -23);
+  checkPiece(pieces, 16, 14, 28, -13, -27);
+  checkPiece(pieces, 17, 15, 32, -14, -31);
+  checkPiece(pieces, 18, 16, 36, -15, -35);
+  checkPiece(pieces, 19, 0, 40, -16, -39);
+
+  checkPiece(pieces, 20, 17, 0, 0, -24);
+  checkPiece(pieces, 21, 18, 0, -17, -28);
+  checkPiece(pieces, 22, 19, 0, -18, -32);
+  checkPiece(pieces, 23, 20, 0, -19, -36);
+  checkPiece(pieces, 24, 0, 0, -20, -40);
 }
