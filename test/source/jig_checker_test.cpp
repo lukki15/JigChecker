@@ -48,9 +48,9 @@ void checkPiece(const checker::Pieces& pieces, size_t index, int32_t right, int3
   EXPECT_EQ(piece.top, top);
 }
 
-constexpr checker::Connections ExampleConnections = {1,  1,  1,  -3, -6, 2,  -5, 4,  -6, -5, -2, -3, -4, -2,
-                                         -3, -3, -7, -7, -6, -1, -1, -7, -7, 4,  -2, 5,  -5, 3,
-                                         -5, -2, 4,  -2, 5,  -3, -6, -4, 6,  -4, 1,  7};
+constexpr checker::Connections ExampleConnections
+    = {1,  1,  1,  -3, -6, 2, -5, 4, -6, -5, -2, -3, -4, -2, -3, -3, -7, -7, -6, -1,
+       -1, -7, -7, 4,  -2, 5, -5, 3, -5, -2, 4,  -2, 5,  -3, -6, -4, 6,  -4, 1,  7};
 
 TEST(GeneratePieces, Example) {
   auto pieces = checker::generatePieces(ExampleConnections);
@@ -122,16 +122,23 @@ TEST(GeneratePieces, iota) {
   checkPiece(pieces, 24, 0, 0, -20, -40);
 }
 
-TEST(CountSolutions, UniqueSolution) {
+using SolutionStrategy = testing::TestWithParam<checker::Strategy>;
+INSTANTIATE_TEST_SUITE_P(JigCheckerParam, SolutionStrategy,
+                         testing::ValuesIn({
+                             checker::Strategy::linear,
+                             // checker::Strategy::borderFirst,
+                         }));
+
+TEST_P(SolutionStrategy, UniqueSolution) {
   std::array<checker::Connection, checker::NUM_CONNECTIONS> connections{};
   std::iota(connections.begin(), connections.end(), 1);
   auto pieces = checker::generatePieces(connections);
 
-  EXPECT_EQ(checker::countSolutions(pieces), 1);
+  EXPECT_EQ(checker::countSolutions(pieces, GetParam()), 1);
 }
 
-TEST(CountSolutions, TwoSolutions) {
+TEST_P(SolutionStrategy, TwoSolutions) {
   auto pieces = checker::generatePieces(ExampleConnections);
 
-  EXPECT_EQ(checker::countSolutions(pieces), 2);
+  EXPECT_EQ(checker::countSolutions(pieces, GetParam()), 2);
 }

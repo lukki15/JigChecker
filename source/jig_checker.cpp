@@ -57,15 +57,32 @@ namespace checker {
     return pieces;
   }
 
-  int64_t countSolutions(const Pieces& pieces) {
-    std::array<bool, JIGSAW_SIZE * JIGSAW_SIZE> remaining;
-    std::fill(remaining.begin(), remaining.end(), true);
-    remaining.at(0) = false;
+  struct SolutionDirection {
+    Connection right;
+    Connection bottom;
+  };
+  using SolutionDirections = std::array<SolutionDirection, JIGSAW_SIZE * JIGSAW_SIZE>;
+  static uint64_t countSolutionsLinear(size_t index, const Pieces& pieces,
+                                       std::array<bool, JIGSAW_SIZE * JIGSAW_SIZE>& remaining,
+                                       SolutionDirections& solution_directions);
 
-    SolutionDirections solution_directions{};
-    solution_directions.at(0) = {.right = pieces.at(0).right, .bottom = pieces.at(0).bottom};
+  uint64_t countSolutions(const Pieces& pieces, Strategy strategy) {
+    switch (strategy) {
+      case Strategy::linear: {
+        std::array<bool, JIGSAW_SIZE * JIGSAW_SIZE> remaining;
+        std::fill(remaining.begin(), remaining.end(), true);
+        remaining.at(0) = false;
 
-    return countSolutions(1, pieces, remaining, solution_directions);
+        SolutionDirections solution_directions{};
+        solution_directions.at(0) = {.right = pieces.at(0).right, .bottom = pieces.at(0).bottom};
+
+        return countSolutionsLinear(1, pieces, remaining, solution_directions);
+      }
+      case Strategy::borderFirst:
+        return 0;
+      default:
+        return 0;
+    }
   }
 
   static std::array<checker::Direction, 4> getRotations(const checker::Direction& piece) {
@@ -92,9 +109,9 @@ namespace checker {
     };
   }
 
-  int64_t countSolutions(size_t index, const Pieces& pieces,
-                         std::array<bool, JIGSAW_SIZE * JIGSAW_SIZE>& remaining,
-                         SolutionDirections& solution_directions) {
+  static uint64_t countSolutionsLinear(size_t index, const Pieces& pieces,
+                                       std::array<bool, JIGSAW_SIZE * JIGSAW_SIZE>& remaining,
+                                       SolutionDirections& solution_directions) {
     if (index >= JIGSAW_SIZE * JIGSAW_SIZE) {
       assert(std::all_of(remaining.cbegin(), remaining.cend(), [](bool b) { return !b; }));
       return 1;
@@ -108,7 +125,7 @@ namespace checker {
     bool rightBorder = x == (JIGSAW_SIZE - 1);
     bool bottomBorder = y == (JIGSAW_SIZE - 1);
 
-    int64_t solutions = 0;
+    uint64_t solutions = 0;
     for (size_t i = 0; i < remaining.size(); i++) {
       if (!remaining.at(i)) {
         continue;
@@ -123,7 +140,7 @@ namespace checker {
           solution_directions.at(index) = {.right = piece.right, .bottom = piece.bottom};
           remaining.at(i) = false;
 
-          solutions += countSolutions(index + 1, pieces, remaining, solution_directions);
+          solutions += countSolutionsLinear(index + 1, pieces, remaining, solution_directions);
 
           remaining.at(i) = true;
         }
