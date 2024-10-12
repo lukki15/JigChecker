@@ -48,10 +48,12 @@ void checkPiece(const checker::Pieces& pieces, size_t index, int32_t right, int3
   EXPECT_EQ(piece.top, top);
 }
 
-TEST(GeneratePieces, Example) {
-  auto pieces = checker::generatePieces({1,  1,  1,  -3, -6, 2,  -5, 4,  -6, -5, -2, -3, -4, -2,
+constexpr checker::Connections ExampleConnections = {1,  1,  1,  -3, -6, 2,  -5, 4,  -6, -5, -2, -3, -4, -2,
                                          -3, -3, -7, -7, -6, -1, -1, -7, -7, 4,  -2, 5,  -5, 3,
-                                         -5, -2, 4,  -2, 5,  -3, -6, -4, 6,  -4, 1,  7});
+                                         -5, -2, 4,  -2, 5,  -3, -6, -4, 6,  -4, 1,  7};
+
+TEST(GeneratePieces, Example) {
+  auto pieces = checker::generatePieces(ExampleConnections);
 
   checkPiece(pieces, 0, 1, -1, 0, 0);
   checkPiece(pieces, 1, 1, -2, -1, 0);
@@ -118,4 +120,18 @@ TEST(GeneratePieces, iota) {
   checkPiece(pieces, 22, 19, 0, -18, -32);
   checkPiece(pieces, 23, 20, 0, -19, -36);
   checkPiece(pieces, 24, 0, 0, -20, -40);
+}
+
+TEST(CountSolutions, UniqueSolution) {
+  std::array<checker::Connection, checker::NUM_CONNECTIONS> connections{};
+  std::iota(connections.begin(), connections.end(), 1);
+  auto pieces = checker::generatePieces(connections);
+
+  EXPECT_EQ(checker::countSolutions(pieces), 1);
+}
+
+TEST(CountSolutions, TwoSolutions) {
+  auto pieces = checker::generatePieces(ExampleConnections);
+
+  EXPECT_EQ(checker::countSolutions(pieces), 2);
 }

@@ -22,4 +22,12 @@ namespace checker {
   using Pieces = std::array<Direction, JIGSAW_SIZE * JIGSAW_SIZE>;
   Pieces generatePieces(const Connections& connections);
 
+  int64_t countSolutions(const Pieces& pieces);
+  struct SolutionDirection {
+    Connection right;
+    Connection bottom;
+  };
+  using SolutionDirections = std::array<SolutionDirection, JIGSAW_SIZE * JIGSAW_SIZE>;
+  int64_t countSolutions(size_t index, const Pieces& pieces, std::array<bool, JIGSAW_SIZE * JIGSAW_SIZE> &remaining, SolutionDirections& solution_directions);
+
 }  // namespace checker
