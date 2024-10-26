@@ -20,7 +20,7 @@ Use the following command to build and run the executable target.
 ```bash
 cmake -S standalone -B build/standalone
 cmake --build build/standalone
-./build/standalone/Greeter --help
+./build/standalone/JigChecker --help
 ```
 
 ### Build everything at once
@@ -33,11 +33,11 @@ cmake -S all -B build
 cmake --build build
 
 # run tests
-./build/test/GreeterTests
+./build/test/JigCheckerTests
 # format code
 cmake --build build --target fix-format
 # run standalone
-./build/standalone/Greeter --help
+./build/standalone/JigChecker --help
 # build docs
 cmake --build build --target GenerateDocs
 ```

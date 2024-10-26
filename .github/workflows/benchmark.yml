@@ -33,4 +33,4 @@ jobs:
 
       - name: benchmark
         run: |
-          ./build/GreeterBenchmarks
+          ./build/JigCheckerBenchmarks
