@@ -64,9 +64,8 @@ namespace checker {
                                       SolutionDirections& solution_directions);
 
   constexpr std::array<size_t, JIGSAW_SIZE * JIGSAW_SIZE> linearOrder() {
-    std::array<size_t, JIGSAW_SIZE * JIGSAW_SIZE> array;
-    std::iota(array.begin(), array.end(), 0UL);
-    return array;
+    return {0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12,
+            13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24};
   }
 
   constexpr std::array<size_t, JIGSAW_SIZE * JIGSAW_SIZE> spiralOrder() {
