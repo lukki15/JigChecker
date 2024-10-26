@@ -127,6 +127,7 @@ INSTANTIATE_TEST_SUITE_P(JigCheckerParam, SolutionStrategy,
                          testing::ValuesIn({
                              checker::Strategy::linear,
                              checker::Strategy::spiral,
+                             checker::Strategy::diagonal,
                          }));
 
 TEST_P(SolutionStrategy, UniqueSolution) {

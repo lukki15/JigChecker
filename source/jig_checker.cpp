@@ -74,6 +74,11 @@ namespace checker {
             15, 10, 5, 6, 7, 8, 13, 18, 17, 16, 11, 12};
   }
 
+  constexpr std::array<size_t, JIGSAW_SIZE * JIGSAW_SIZE> diagonalOrder() {
+    return {0, 1, 5, 10, 6,  2,  3,  7,  11, 15, 20, 16, 12,
+            8, 4, 9, 13, 17, 21, 22, 18, 14, 19, 23, 24};
+  }
+
   uint64_t countSolutions(const Pieces& pieces, Strategy strategy) {
     std::array<bool, JIGSAW_SIZE * JIGSAW_SIZE> remaining;
     std::fill(remaining.begin(), remaining.end(), true);
@@ -85,9 +90,11 @@ namespace checker {
       case Strategy::linear:
         return countSolutionsOrder<linearOrder(), 1>(pieces, remaining, solution_directions);
 
-      case Strategy::spiral: {
+      case Strategy::spiral:
         return countSolutionsOrder<spiralOrder(), 1>(pieces, remaining, solution_directions);
-      }
+
+      case Strategy::diagonal:
+        return countSolutionsOrder<diagonalOrder(), 1>(pieces, remaining, solution_directions);
 
       default:
         return 0;

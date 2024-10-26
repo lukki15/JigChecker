@@ -21,9 +21,10 @@ static void BM_GeneratePieces(benchmark::State& state) {
 }
 BENCHMARK(BM_GeneratePieces);
 
-constexpr std::array<checker::Strategy, 2> strategies{
+constexpr std::array<checker::Strategy, 3> strategies{
     checker::Strategy::linear,
     checker::Strategy::spiral,
+    checker::Strategy::diagonal,
 };
 
 static void BM_UniqueCountSolutionsLinear(benchmark::State& state) {

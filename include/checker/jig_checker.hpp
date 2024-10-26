@@ -25,6 +25,7 @@ namespace checker {
   enum class Strategy {
     linear,
     spiral,
+    diagonal,
   };
   uint64_t countSolutions(const Pieces& pieces, Strategy strategy);
 }  // namespace checker
