@@ -126,7 +126,7 @@ using SolutionStrategy = testing::TestWithParam<checker::Strategy>;
 INSTANTIATE_TEST_SUITE_P(JigCheckerParam, SolutionStrategy,
                          testing::ValuesIn({
                              checker::Strategy::linear,
-                             // checker::Strategy::borderFirst,
+                             checker::Strategy::spiral,
                          }));
 
 TEST_P(SolutionStrategy, UniqueSolution) {

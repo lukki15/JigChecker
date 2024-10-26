@@ -57,29 +57,38 @@ namespace checker {
     return pieces;
   }
 
-  struct SolutionDirection {
-    Connection right;
-    Connection bottom;
-  };
-  using SolutionDirections = std::array<SolutionDirection, JIGSAW_SIZE * JIGSAW_SIZE>;
-  static uint64_t countSolutionsLinear(size_t index, const Pieces& pieces,
-                                       std::array<bool, JIGSAW_SIZE * JIGSAW_SIZE>& remaining,
-                                       SolutionDirections& solution_directions);
+  using SolutionDirections = Pieces;
+  template <std::array<size_t, JIGSAW_SIZE * JIGSAW_SIZE> ORDER, size_t POS>
+  static uint64_t countSolutionsOrder(const Pieces& pieces,
+                                      std::array<bool, JIGSAW_SIZE * JIGSAW_SIZE>& remaining,
+                                      SolutionDirections& solution_directions);
+
+  constexpr std::array<size_t, JIGSAW_SIZE * JIGSAW_SIZE> linearOrder() {
+    std::array<size_t, JIGSAW_SIZE * JIGSAW_SIZE> array;
+    std::iota(array.begin(), array.end(), 0UL);
+    return array;
+  }
+
+  constexpr std::array<size_t, JIGSAW_SIZE * JIGSAW_SIZE> spiralOrder() {
+    return {0,  1,  2, 3, 4, 9, 14, 19, 24, 23, 22, 21, 20,
+            15, 10, 5, 6, 7, 8, 13, 18, 17, 16, 11, 12};
+  }
 
   uint64_t countSolutions(const Pieces& pieces, Strategy strategy) {
+    std::array<bool, JIGSAW_SIZE * JIGSAW_SIZE> remaining;
+    std::fill(remaining.begin(), remaining.end(), true);
+    remaining.at(0) = false;
+
+    SolutionDirections solution_directions{pieces.at(0)};
+
     switch (strategy) {
-      case Strategy::linear: {
-        std::array<bool, JIGSAW_SIZE * JIGSAW_SIZE> remaining;
-        std::fill(remaining.begin(), remaining.end(), true);
-        remaining.at(0) = false;
+      case Strategy::linear:
+        return countSolutionsOrder<linearOrder(), 1>(pieces, remaining, solution_directions);
 
-        SolutionDirections solution_directions{};
-        solution_directions.at(0) = {.right = pieces.at(0).right, .bottom = pieces.at(0).bottom};
-
-        return countSolutionsLinear(1, pieces, remaining, solution_directions);
+      case Strategy::spiral: {
+        return countSolutionsOrder<spiralOrder(), 1>(pieces, remaining, solution_directions);
       }
-      case Strategy::borderFirst:
-        return 0;
+
       default:
         return 0;
     }
@@ -109,45 +118,58 @@ namespace checker {
     };
   }
 
-  static uint64_t countSolutionsLinear(size_t index, const Pieces& pieces,
-                                       std::array<bool, JIGSAW_SIZE * JIGSAW_SIZE>& remaining,
-                                       SolutionDirections& solution_directions) {
-    if (index >= JIGSAW_SIZE * JIGSAW_SIZE) {
+  template <std::array<size_t, JIGSAW_SIZE * JIGSAW_SIZE> ORDER, size_t POS>
+  static uint64_t countSolutionsOrder(const Pieces& pieces,
+                                      std::array<bool, JIGSAW_SIZE * JIGSAW_SIZE>& remaining,
+                                      SolutionDirections& solution_directions) {
+    if constexpr (POS >= JIGSAW_SIZE * JIGSAW_SIZE) {
       assert(std::all_of(remaining.cbegin(), remaining.cend(), [](bool b) { return !b; }));
       return 1;
-    }
+    } else {
+      constexpr size_t index = ORDER.at(POS);
 
-    auto x = index % JIGSAW_SIZE;
-    auto y = index / JIGSAW_SIZE;
+      constexpr auto x = index % JIGSAW_SIZE;
+      constexpr auto y = index / JIGSAW_SIZE;
 
-    int32_t top = (y == 0) ? 0 : -solution_directions.at((y - 1) * JIGSAW_SIZE + x).bottom;
-    int32_t left = -solution_directions.at(index - 1).right;
-    bool rightBorder = x == (JIGSAW_SIZE - 1);
-    bool bottomBorder = y == (JIGSAW_SIZE - 1);
+      constexpr bool rightBorder = x == (JIGSAW_SIZE - 1);
+      constexpr bool leftBorder = x == 0;
+      constexpr bool bottomBorder = y == (JIGSAW_SIZE - 1);
+      constexpr bool topBorder = y == 0;
 
-    uint64_t solutions = 0;
-    for (size_t i = 0; i < remaining.size(); i++) {
-      if (!remaining.at(i)) {
-        continue;
-      }
+      int32_t top = topBorder ? 0 : -solution_directions.at((y - 1) * JIGSAW_SIZE + x).bottom;
+      int32_t bottom = bottomBorder ? 0 : -solution_directions.at((y + 1) * JIGSAW_SIZE + x).top;
+      int32_t left = leftBorder ? 0 : -solution_directions.at(index - 1).right;
+      int32_t right = rightBorder ? 0 : -solution_directions.at(index + 1).left;
 
-      for (const auto& piece : getRotations(pieces.at(i))) {
-        bool matchBottom = (piece.bottom == 0) == bottomBorder;
-        bool matchLeft = piece.left == left;
-        bool matchRight = (piece.right == 0) == rightBorder;
-        bool matchTop = piece.top == top;
-        if (matchBottom && matchLeft && matchRight && matchTop) {
-          solution_directions.at(index) = {.right = piece.right, .bottom = piece.bottom};
-          remaining.at(i) = false;
+      constexpr auto match = [](bool border, int32_t dir, int32_t target) {
+        return (!border && target == 0) || dir == target;
+      };
+      uint64_t solutions = 0;
+      for (size_t i = 0; i < remaining.size(); i++) {
+        if (!remaining.at(i)) {
+          continue;
+        }
 
-          solutions += countSolutionsLinear(index + 1, pieces, remaining, solution_directions);
+        for (const auto& piece : getRotations(pieces.at(i))) {
+          bool matchBottom = match(bottomBorder, piece.bottom, bottom);
+          bool matchLeft = match(leftBorder, piece.left, left);
+          bool matchRight = match(rightBorder, piece.right, right);
+          bool matchTop = match(topBorder, piece.top, top);
+          if (matchBottom && matchLeft && matchRight && matchTop) {
+            solution_directions.at(index) = piece;
+            remaining.at(i) = false;
 
-          remaining.at(i) = true;
+            solutions
+                += countSolutionsOrder<ORDER, POS + 1>(pieces, remaining, solution_directions);
+
+            solution_directions.at(index) = {};
+            remaining.at(i) = true;
+          }
         }
       }
-    }
 
-    return solutions;
+      return solutions;
+    }
   }
 
 }  // namespace checker

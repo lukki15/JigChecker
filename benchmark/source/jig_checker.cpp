@@ -23,7 +23,7 @@ BENCHMARK(BM_GeneratePieces);
 
 constexpr std::array<checker::Strategy, 2> strategies{
     checker::Strategy::linear,
-    checker::Strategy::borderFirst,
+    checker::Strategy::spiral,
 };
 
 static void BM_UniqueCountSolutionsLinear(benchmark::State& state) {
