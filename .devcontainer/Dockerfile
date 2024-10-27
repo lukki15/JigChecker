@@ -19,4 +19,5 @@ RUN sudo apt-get update && \
     sudo apt-get install -y -q --no-install-recommends \
         cmake-format \
         clang-format \
+        iwyu         \
     && sudo apt-get autoremove -y

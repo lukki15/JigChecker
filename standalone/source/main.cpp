@@ -1,9 +1,8 @@
-#include <jigchecker/version.h>
-
-#include <cxxopts.hpp>
-#include <iostream>
-#include <string>
-#include <unordered_map>
+#include <jigchecker/version.h>  // for JIGCHECKER_VERSION
+#include <cxxopts.hpp>           // for value, OptionAdder, Options, OptionV...
+#include <iostream>              // for operator<<, endl, basic_ostream, cout
+#include <memory>                // for shared_ptr, __shared_ptr_access
+#include <string>                // for string, operator<<, char_traits
 
 auto main(int argc, char** argv) -> int {
   cxxopts::Options options(*argv, "A program to welcome the world!");

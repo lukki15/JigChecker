@@ -1,8 +1,8 @@
 #pragma once
 
-#include <array>
-#include <cstddef>
-#include <cstdint>
+#include <array> // for array
+#include <cstddef> // for size_t
+#include <cstdint> // for int8_t
 
 namespace checker {
 

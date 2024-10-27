@@ -1,8 +1,7 @@
-#include <benchmark/benchmark.h>
-
-#include <array>
-#include <checker/jig_checker.hpp>
-#include <numeric>
+#include <benchmark/benchmark.h>    // for State, State::StateIterator, BENC...
+#include <array>                    // for array
+#include <checker/jig_checker.hpp>  // for Strategy, generatePieces, countSo...
+#include <numeric>                  // for iota
 
 static void BM_GenerateConnections(benchmark::State& state) {
   for (auto _ : state) {
