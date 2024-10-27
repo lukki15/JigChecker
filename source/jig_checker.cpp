@@ -1,4 +1,5 @@
-#include <stddef.h>                 // for size_t
+#include <stddef.h>  // for size_t
+
 #include <algorithm>                // for all_of, fill, shuffle
 #include <array>                    // for array, array<>::value_type
 #include <cassert>                  // for assert
