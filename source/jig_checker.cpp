@@ -1,9 +1,8 @@
-#include <stddef.h>  // for size_t
-
 #include <algorithm>                // for all_of, fill, shuffle
 #include <array>                    // for array, array<>::value_type
 #include <cassert>                  // for assert
 #include <checker/jig_checker.hpp>  // for Direction, JIGSAW_SIZE, Pieces
+#include <cstddef>                  // for size_t
 #include <cstdint>                  // for int16_t, int32_t, uint64_t
 #include <random>                   // for mt19937, uniform_int_distribution
 

@@ -1,11 +1,11 @@
 
-#include <bits/std_abs.h>  // for abs
-#include <gtest/gtest.h>   // for ParamIteratorInterface, Test, Mes...
-#include <stdint.h>        // for int32_t
-#include <stdlib.h>        // for size_t, abs
+#include <gtest/gtest.h>  // for ParamIteratorInterface, Test, Mes...
 
 #include <array>                    // for array
 #include <checker/jig_checker.hpp>  // for Strategy, generatePieces, Direction
+#include <cmath>                    // for abs
+#include <cstdint>                  // for int32_t
+#include <cstdlib>                  // for size_t, abs
 #include <numeric>                  // for iota
 #include <string>                   // for operator+, to_string, string
 
